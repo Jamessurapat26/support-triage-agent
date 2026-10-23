@@ -1,34 +1,77 @@
-# Support Ticket Triage AI Agent
+# Support Ticket Triage Agent
 
-An automated AI Support Ticket Triage system built with **FastAPI**, **OpenAI Function Calling**, and **Pydantic Structured Outputs**. The agent evaluates incoming multi-turn support conversations, investigates context via internal tools (customer SLA, billing logs, internal telemetry, and knowledge base), classifies urgency, extracts structured metadata, and decides the appropriate operational next action.
+FastAPI service that triages a support ticket: it classifies urgency, looks up the customer, knowledge base, and system status, then returns a structured next action and a draft reply.
 
----
+See [WRITEUP.md](WRITEUP.md) for architecture decisions, failure modes, and evaluation.
 
-## Key Capabilities
+## Setup
 
-* **Urgency Classification**: Categorizes issues into `critical`, `high`, `medium`, or `low` based on SLA, business impact, and deadline pressures.
-* **Metadata Extraction**: Extracts `product_area`, `issue_type`, `customer_sentiment`, `detected_language`, and a concise executive `summary`.
-* **Tool-Driven Investigation**: Mandates calling at least 2 internal tools (mocked) to gather facts before reaching a verdict:
-  * `search_knowledge_base`: Retrieves troubleshooting steps, known bugs, or workarounds.
-  * `get_customer_profile`: Looks up account, plan, SLA tier, region, and recent billing transactions by customer ID.
-  * `check_system_status`: Checks active infrastructure incidents for a region code.
-* **Next Action Routing**: Decides whether to `auto_respond`, `route_to_specialist`, or `escalate_to_human`.
-* **Language-Preserved Response**: Automatically crafts an empathetic resolution response in the customer's native language (e.g., Thai or English).
+Requires Python 3.13.
 
----
+```bash
+cp .env.example .env
+```
 
-## Project Structure
+Set `OPENAI_API_KEY` in `.env`. `OPENAI_MODEL` defaults to `gpt-6-luna`. Set `OPENAI_BASE_URL` when calling an OpenAI-compatible host such as OpenRouter, and use that host's model id in `OPENAI_MODEL` (for example `openai/gpt-6-luna`).
 
-```text
-├── app/
-│   ├── __init__.py
-│   ├── agent.py          # Core Agent loop (tool calling + structured output)
-│   ├── prompts.py        # System prompt with triage guardrails
-│   ├── sample_data.py    # 3 sample tickets provided in the assignment
-│   ├── schemas.py        # Pydantic schemas (Request, Response, Enums)
-│   └── tools.py          # Tool schemas and mock implementations
-├── main.py               # FastAPI application and test endpoints
-├── pyproject.toml        # Project dependencies (uv-compatible)
-├── requirements.txt      # Standard pip dependencies
-├── .env.example          # Environment variables template
-└── README.md             # Documentation and design write-up
+Install dependencies with [uv](https://docs.astral.sh/uv/):
+
+```bash
+uv sync
+```
+
+Or with pip:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+## Run
+
+```bash
+uv run uvicorn main:app --reload
+```
+
+If you installed with pip and the virtualenv is active, drop the `uv run` prefix:
+
+```bash
+uvicorn main:app --reload
+```
+
+The API listens on http://127.0.0.1:8000. Interactive docs are at http://127.0.0.1:8000/docs.
+
+Check that the app and the configured model are reachable:
+
+```bash
+curl http://127.0.0.1:8000/health
+```
+
+Run one of the three built-in sample tickets (`1`, `2`, or `3`):
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/v1/triage/sample/1
+```
+
+Run all three samples:
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/v1/triage/evaluate-all
+```
+
+Submit your own ticket:
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/v1/triage \
+  -H "Content-Type: application/json" \
+  -d '{
+    "customer_id": "CUST-1001",
+    "customer_info": "Free plan, 4 months",
+    "messages": [
+      {"timestamp": "just now", "content": "My payment failed when I tried to upgrade to Pro."}
+    ]
+  }'
+```
+
+`ticket_id` is optional. When it is omitted, the API generates one.
