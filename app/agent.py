@@ -73,13 +73,11 @@ class SupportTriageAgent:
         messages_text = "\n".join(
             [f"- [{msg.timestamp}]: {msg.content}" for msg in ticket.messages]
         )
-        ticket_id = ticket.ticket_id or "Not provided"
         customer_id = ticket.customer_id or "Not provided"
-        customer_info = ticket.customer_info or "Not provided"
         return (
-            f"Ticket ID: {ticket_id}\n"
+            f"Ticket ID: {ticket.ticket_id}\n"
             f"Customer ID: {customer_id}\n"
-            f"Customer Info: {customer_info}\n\n"
+            f"Customer Info: {ticket.customer_info}\n\n"
             f"Conversation History:\n{messages_text}"
         )
 
@@ -154,7 +152,7 @@ class SupportTriageAgent:
 
 
         return APIResponse(
-            ticket_id=ticket.ticket_id or "Not provided",
+            ticket_id=ticket.ticket_id,
             tools_called=tools_called,
             triage_result=triage_result,
         )
