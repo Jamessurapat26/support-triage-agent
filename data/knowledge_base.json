@@ -1,0 +1,58 @@
+[
+  {
+    "id": "KB-101",
+    "title": "Failed Upgrades and Multiple Pending Charges",
+    "category": "billing",
+    "keywords": ["payment", "payments", "charge", "charges", "charged", "upgrade", "upgrading", "billing", "pending", "hold", "holds", "authorization", "card", "ตัดเงิน", "อัปเกรด"],
+    "content": "If a customer experiences a payment gateway timeout during a Pro upgrade, multiple pending authorization holds ($29.99) may appear on their bank statement, while the account remains on the Free tier. Action Policy: Billing specialists must manually void duplicate pending authorizations and force-provision Pro access immediately if the user has an urgent deadline."
+  },
+  {
+    "id": "KB-205",
+    "title": "Troubleshooting HTTP 500 Errors & Regional Discrepancies",
+    "category": "technical",
+    "keywords": ["500", "error", "errors", "outage", "server", "crash", "unavailable", "regional", "region", "gateway", "status", "ล่ม", "เข้าไม่ได้"],
+    "content": "HTTP 500 errors across multiple browsers/machines indicate a server-side failure. Note: status.company.com only reflects global core availability and may lag behind regional edge gateway incidents (e.g., Asia-Pacific CDN/Gateway). Action Policy: Any Enterprise outage affecting multiple seats must be escalated immediately to the On-Call Incident / Infrastructure Engineering team."
+  },
+  {
+    "id": "KB-312",
+    "title": "Dark Mode Settings & Known macOS 'System Default' Sync Bug",
+    "category": "feature",
+    "keywords": ["dark", "theme", "appearance", "macos", "schedule", "scheduled", "system", "default", "mode", "โหมดมืด"],
+    "content": "1. Known Issue (BUG-884): On macOS, selecting 'System Default' under Settings > Appearance sometimes fails to detect OS-level Dark Mode due to a cached desktop client flag. Workaround: Clear app cache (Settings > Advanced > Clear Cache) and restart the app, which will also reveal the manual 'Dark' toggle on Pro plans. 2. Scheduled Dark Mode (Auto-switch by time): Currently not supported. It is tracked on our public product roadmap (Feature Request ID: FR-409) for Q3."
+  },
+  {
+    "id": "KB-401",
+    "title": "How to Reset Your Password",
+    "category": "account",
+    "keywords": ["password", "reset", "forgot", "forgotten", "login", "signin", "locked", "รหัสผ่าน", "ลืมรหัส"],
+    "content": "On the login page, click 'Forgot password' and enter the account email. A reset link valid for 30 minutes is sent to that email. If no email arrives within 10 minutes, check the spam folder. After 5 failed login attempts the account is locked for 15 minutes. Action Policy: This can be auto-responded. Route to account support only if the customer no longer has access to their email."
+  },
+  {
+    "id": "KB-402",
+    "title": "Updating Profile Picture, Name, and Email",
+    "category": "account",
+    "keywords": ["profile", "picture", "photo", "avatar", "name", "email", "account", "settings", "change", "update", "โปรไฟล์", "รูป"],
+    "content": "Go to Settings > Profile to change the profile picture (JPG or PNG, max 5 MB), display name, or email. Changing the email sends a confirmation link to the new address; the change takes effect after confirmation. Action Policy: This can be auto-responded."
+  },
+  {
+    "id": "KB-403",
+    "title": "Exporting Your Data (CSV / PDF)",
+    "category": "feature",
+    "keywords": ["export", "exporting", "download", "csv", "pdf", "report", "reports", "backup", "ส่งออก"],
+    "content": "Go to Settings > Data > Export and choose CSV or PDF. Exports larger than 10,000 rows are emailed as a download link within 15 minutes. Exports are available on Pro and Enterprise plans only. Action Policy: Auto-respond for how-to questions. If an export fails repeatedly with an error, route to product support as a possible bug."
+  },
+  {
+    "id": "KB-404",
+    "title": "Managing Email and Push Notifications",
+    "category": "feature",
+    "keywords": ["notification", "notifications", "push", "alert", "alerts", "unsubscribe", "spam", "emails", "แจ้งเตือน"],
+    "content": "Go to Settings > Notifications to turn email and push notifications on or off per category. Marketing emails can also be stopped with the 'Unsubscribe' link at the bottom of any email. Changes apply within 24 hours. Action Policy: This can be auto-responded."
+  },
+  {
+    "id": "KB-405",
+    "title": "Cancellation and Refund Policy",
+    "category": "billing",
+    "keywords": ["cancel", "cancellation", "refund", "refunds", "subscription", "downgrade", "money", "back", "ยกเลิก", "คืนเงิน"],
+    "content": "Customers can cancel at any time under Settings > Billing; access continues until the end of the current billing period. Refunds are available within 14 days of the first payment of a plan. Action Policy: Route refund requests to the billing team. Escalate to a human if the customer mentions a chargeback, a dispute, or legal action."
+  }
+]

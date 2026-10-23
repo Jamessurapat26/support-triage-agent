@@ -1,64 +1,46 @@
 import json
+import re
 from typing import Dict, Any
+from pathlib import Path
+
+
+KB_PATH = Path(__file__).parent.parent / "data" / "knowledge_base.json"
+KB_ARTICLES = json.loads(KB_PATH.read_text(encoding="utf-8"))
 
 # =====================================================================
 # Part 1: Tool implementations (real functions backed by mock data)
 # =====================================================================
+_THAI = re.compile(r"[\u0e00-\u0e7f]")
 
-def search_knowledge_base(query: str, category: str = "general") -> str:
-    """
-    Search the knowledge base for FAQ articles, basic troubleshooting steps, or known bugs.
-    """
-    q = query.lower()
-    results = []
 
-    # Mock data for billing / payment (covers ticket 1).
-    if any(k in q for k in ["payment", "charge", "upgrade", "billing", "pro", "refund"]) or category == "billing":
-        results.append({
-            "article_id": "KB-101",
-            "title": "Failed Upgrades and Multiple Pending Charges",
-            "content": (
-                "If a customer experiences a payment gateway timeout during a Pro upgrade, "
-                "multiple pending authorization holds ($29.99) may appear on their bank statement, "
-                "while the account remains on the Free tier. "
-                "Action Policy: Billing specialists must manually void duplicate pending authorizations "
-                "and force-provision Pro access immediately if the user has an urgent deadline."
-            )
-        })
+def tokenize(text: str) -> set[str]:
+    return set(re.findall(r"\w+", text.lower()))
 
-    # Mock data for error 500 / outage (covers ticket 2).
-    if any(k in q for k in ["500", "outage", "down", "asia", "thailand", "access", "status"]) or category == "technical":
-        results.append({
-            "article_id": "KB-205",
-            "title": "Troubleshooting HTTP 500 Errors & Regional Discrepancies",
-            "content": (
-                "HTTP 500 errors across multiple browsers/machines indicate a server-side failure. "
-                "Note: status.company.com only reflects global core availability and may lag behind "
-                "regional edge gateway incidents (e.g., Asia-Pacific CDN/Gateway). "
-                "Action Policy: Any Enterprise outage affecting multiple seats must be escalated "
-                "immediately to the On-Call Incident / Infrastructure Engineering team."
-            )
-        })
 
-    # Mock data for dark mode / appearance (covers ticket 3).
-    if any(k in q for k in ["dark", "theme", "appearance", "mac", "schedule", "system default"]) or category == "feature":
-        results.append({
-            "article_id": "KB-312",
-            "title": "Dark Mode Settings & Known macOS 'System Default' Sync Bug",
-            "content": (
-                "1. Known Issue (BUG-884): On macOS, selecting 'System Default' under Settings > Appearance "
-                "sometimes fails to detect OS-level Dark Mode due to a cached desktop client flag. "
-                "Workaround: Clear app cache (Settings > Advanced > Clear Cache) and restart the app, "
-                "which will also reveal the manual 'Dark' toggle on Pro plans.\n"
-                "2. Scheduled Dark Mode (Auto-switch by time): Currently not supported. "
-                "It is tracked on our public product roadmap (Feature Request ID: FR-409) for Q3."
-            )
-        })
-
-    if not results:
-        return json.dumps({"status": "no_exact_match", "message": "No specific KB article found. Use general triage rules."})
-
-    return json.dumps({"status": "success", "articles": results}, ensure_ascii=False)
+def search_knowledge_base(query: str, top_k: int = 3) -> str:
+    words = tokenize(query)
+    scored = []
+    for article in KB_ARTICLES:
+        keywords = article["keywords"]
+        matched = words & set(keywords)
+        for keyword in keywords:
+            if _THAI.search(keyword) and keyword in query:
+                matched.add(keyword)
+        if matched:
+            scored.append({
+                "article_id": article["id"],
+                "title": article["title"],
+                "score": len(matched) / len(keywords),
+                "matched_keywords": sorted(matched),
+                "content": article["content"],
+            })
+    scored.sort(key=lambda article: article["score"], reverse=True)
+    if not scored:
+        return json.dumps({"status": "no_match"}, ensure_ascii=False)
+    return json.dumps(
+        {"status": "success", "results": scored[:top_k]},
+        ensure_ascii=False,
+    )
 
 
 def check_customer_and_billing_status(customer_context: str) -> str:
@@ -129,21 +111,21 @@ TOOLS_SCHEMA = [
         "type": "function",
         "function": {
             "name": "search_knowledge_base",
-            "description": "Search the internal Knowledge Base (FAQ, troubleshooting docs, known bugs, and feature roadmap) to help answer or triage the ticket.",
+            "description": "Search the internal Knowledge Base (FAQ, troubleshooting docs, known bugs, and feature roadmap) to help answer or triage the ticket. Use English keywords.",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "query": {
                         "type": "string",
-                        "description": "Keywords to search for (e.g., 'payment failed multiple charges', 'error 500 asia', 'dark mode mac bug schedule')"
+                        "description": "Use English keywords (e.g., 'payment failed multiple charges', 'error 500 asia', 'dark mode mac bug schedule')"
                     },
-                    "category": {
-                        "type": "string",
-                        "enum": ["billing", "technical", "feature", "general"],
-                        "description": "Category of the issue"
+                    "top_k": {
+                        "type": "integer",
+                        "description": "Maximum number of articles to return.",
+                        "default": 3
                     }
                 },
-                "required": ["query", "category"]
+                "required": ["query"]
             }
         }
     },
