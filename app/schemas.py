@@ -1,4 +1,5 @@
 from enum import Enum
+from uuid import uuid4
 
 from pydantic import BaseModel, Field
 
@@ -34,17 +35,17 @@ class TicketMessage(BaseModel):
 
 
 class TicketInput(BaseModel):
-    ticket_id: str | None = Field(
-        None,
-        description="Optional ticket reference id, e.g. 'TICKET-001'"
+    ticket_id: str = Field(
+        default_factory=lambda: f"TICKET-{uuid4().hex[:8].upper()}",
+        description="Optional ticket reference id, e.g. 'TICKET-001'. Auto-generated when omitted."
     )
     customer_id: str | None = Field(
         None,
         description="Optional internal customer ID, e.g. 'CUST-1001'"
     )
-    customer_info: str | None = Field(
-        None,
-        description="Optional free-text customer details, such as plan and how long they have been a customer"
+    customer_info: str = Field(
+        ...,
+        description="Basic customer details, such as plan and how long they have been a customer"
     )
     messages: list[TicketMessage] = Field(
         ...,
