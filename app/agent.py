@@ -30,10 +30,6 @@ class SupportTriageAgent:
         self.model = os.getenv("OPENAI_MODEL", "openai/gpt-6-luna")
         self.client = OpenAI(api_key=api_key, base_url=base_url) if base_url else OpenAI(api_key=api_key)
 
-        base_url = os.getenv("OPENAI_BASE_URL")
-        model = os.getenv("OPENAI_MODEL", "openai/gpt-6-luna")
-        client = OpenAI(api_key=api_key, base_url=base_url) if base_url else OpenAI(api_key=api_key)
-
     def check_openai_health(self) -> dict:
         """Confirm the API key works and the configured model is available.
 
