@@ -25,8 +25,9 @@ class SupportTriageAgent:
         # Supports both the official OpenAI API and OpenRouter (uses OPENAI_BASE_URL from .env when set).
         base_url = os.getenv("OPENAI_BASE_URL")
 
-        # gpt-4o-mini is a good default for OpenRouter: it supports tool calling and structured outputs, and it is inexpensive.
-        self.model = os.getenv("OPENAI_MODEL", "openai/gpt-4o-mini")
+        # gpt-6-luna is a good default: it supports tool calling and structured outputs.
+        # Override via OPENAI_MODEL (e.g. openai/gpt-6-luna when using OpenRouter).
+        self.model = os.getenv("OPENAI_MODEL", "gpt-6-luna")
         self.client = OpenAI(api_key=api_key, base_url=base_url) if base_url else OpenAI(api_key=api_key)
 
     def check_openai_health(self) -> dict:

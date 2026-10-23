@@ -9,9 +9,7 @@
       {"attempt": 2, "amount": "$29.99", "status": "Gateway Timeout - Pending Hold"},
       {"attempt": 3, "amount": "$29.99", "status": "Gateway Timeout - Pending Hold"}
     ],
-    "pro_entitlement_active": false,
-    "chargeback_risk": "HIGH (Customer threatened bank dispute)",
-    "recommended_handling": "Requires human Billing Specialist / Support Lead to manually reverse 2 holds, capture 1, and unlock Pro features immediately."
+    "pro_entitlement_active": false
   },
   "CUST-2001": {
     "plan": "Enterprise",
@@ -32,7 +30,7 @@
     "payment_gateway_logs": [
       {"date": "2026-09-01", "amount": "$29.99", "status": "Captured"}
     ],
-    "client_version": "macOS Desktop v2.4.1 (Affected by cached theme flag bug)"
+    "client_version": "macOS Desktop v2.4.1"
   },
   "CUST-4001": {
     "plan": "Free",
