@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List
+
 from pydantic import BaseModel, Field
 
 
@@ -34,15 +34,19 @@ class TicketMessage(BaseModel):
 
 
 class TicketInput(BaseModel):
-    ticket_id: str = Field(
-        ...,
-        description="Ticket reference id, e.g. 'TICKET-001'"
+    ticket_id: str | None = Field(
+        None,
+        description="Optional ticket reference id, e.g. 'TICKET-001'"
     )
-    customer_info: str = Field(
-        ...,
-        description="Basic customer details, such as plan and how long they have been a customer"
+    customer_id: str | None = Field(
+        None,
+        description="Optional internal customer ID, e.g. 'CUST-1001'"
     )
-    messages: List[TicketMessage] = Field(
+    customer_info: str | None = Field(
+        None,
+        description="Optional free-text customer details, such as plan and how long they have been a customer"
+    )
+    messages: list[TicketMessage] = Field(
         ...,
         description="Customer messages in chronological order"
     )
@@ -83,7 +87,7 @@ class TriageResult(BaseModel):
         ...,
         description="Key information extracted from the ticket"
     )
-    relevant_kb_articles: List[str] = Field(
+    relevant_kb_articles: list[str] = Field(
         ...,
         description="Knowledge Base article titles or ids used to help answer the ticket"
     )
@@ -103,7 +107,7 @@ class TriageResult(BaseModel):
 
 class APIResponse(BaseModel):
     ticket_id: str
-    tools_called: List[str] = Field(
+    tools_called: list[str] = Field(
         ...,
         description="Tools the agent called while analyzing the ticket"
     )

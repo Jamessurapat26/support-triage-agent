@@ -1,0 +1,99 @@
+{
+  "CUST-1001": {
+    "plan": "Free",
+    "account_tier": "Free (Upgrade Stuck)",
+    "region": "us-east-1",
+    "tenure": "4 months",
+    "payment_gateway_logs": [
+      {"attempt": 1, "amount": "$29.99", "status": "Gateway Timeout - Pending Hold"},
+      {"attempt": 2, "amount": "$29.99", "status": "Gateway Timeout - Pending Hold"},
+      {"attempt": 3, "amount": "$29.99", "status": "Gateway Timeout - Pending Hold"}
+    ],
+    "pro_entitlement_active": false,
+    "chargeback_risk": "HIGH (Customer threatened bank dispute)",
+    "recommended_handling": "Requires human Billing Specialist / Support Lead to manually reverse 2 holds, capture 1, and unlock Pro features immediately."
+  },
+  "CUST-2001": {
+    "plan": "Enterprise",
+    "account_tier": "Enterprise",
+    "seats": 45,
+    "region": "ap-southeast-1",
+    "sla_tier": "Platinum (15-minute response SLA for critical outages)",
+    "tenure": "8 months",
+    "account_health_note": "High-value account. Active client demo today."
+  },
+  "CUST-3001": {
+    "plan": "Pro",
+    "account_tier": "Pro",
+    "region": "us-east-1",
+    "tenure": "5 months",
+    "engagement": "High (Daily active user)",
+    "billing_status": "Healthy (No failed payments)",
+    "payment_gateway_logs": [
+      {"date": "2026-09-01", "amount": "$29.99", "status": "Captured"}
+    ],
+    "client_version": "macOS Desktop v2.4.1 (Affected by cached theme flag bug)"
+  },
+  "CUST-4001": {
+    "plan": "Free",
+    "account_tier": "Free",
+    "region": "us-east-1",
+    "tenure": "2 months",
+    "sla_tier": "Community",
+    "billing_status": "No payment method on file",
+    "payment_gateway_logs": [],
+    "open_incidents": []
+  },
+  "CUST-5001": {
+    "plan": "Pro",
+    "account_tier": "Pro",
+    "region": "eu-west-1",
+    "seats": 1,
+    "tenure": "11 months",
+    "sla_tier": "Standard (next-business-day)",
+    "billing_status": "Healthy",
+    "payment_gateway_logs": [
+      {"date": "2026-10-01", "amount": "$29.99", "status": "Captured"}
+    ],
+    "open_incidents": []
+  },
+  "CUST-6001": {
+    "plan": "Enterprise",
+    "account_tier": "Enterprise",
+    "region": "us-east-1",
+    "seats": 120,
+    "tenure": "3 years",
+    "sla_tier": "Gold (1-hour response SLA)",
+    "billing_status": "Healthy (annual invoice paid)",
+    "payment_gateway_logs": [
+      {"date": "2026-01-15", "amount": "$18000.00", "status": "Captured"}
+    ],
+    "open_incidents": []
+  },
+  "CUST-7001": {
+    "plan": "Pro",
+    "account_tier": "Pro",
+    "region": "ap-southeast-1",
+    "seats": 3,
+    "tenure": "7 months",
+    "sla_tier": "Standard (next-business-day)",
+    "billing_status": "Healthy",
+    "payment_gateway_logs": [
+      {"date": "2026-10-05", "amount": "$29.99", "status": "Captured"}
+    ],
+    "open_incidents": []
+  },
+  "CUST-8001": {
+    "plan": "Enterprise",
+    "account_tier": "Enterprise",
+    "region": "eu-west-1",
+    "seats": 30,
+    "tenure": "14 months",
+    "sla_tier": "Platinum (15-minute response SLA for critical outages)",
+    "billing_status": "Healthy",
+    "payment_gateway_logs": [
+      {"date": "2026-08-01", "amount": "$4500.00", "status": "Captured"}
+    ],
+    "open_incidents": []
+  }
+}

@@ -1,10 +1,10 @@
-from typing import Dict
 from app.schemas import TicketInput, TicketMessage
 
 # Sample tickets from the assignment, keyed by 1, 2, and 3.
-SAMPLE_TICKETS: Dict[int, TicketInput] = {
+SAMPLE_TICKETS: dict[int, TicketInput] = {
     1: TicketInput(
         ticket_id="TICKET-001",
+        customer_id="CUST-1001",
         customer_info="Free plan (upgrade attempted), 4 months on free tier, first time contacting support",
         messages=[
             TicketMessage(
@@ -27,6 +27,7 @@ SAMPLE_TICKETS: Dict[int, TicketInput] = {
     ),
     2: TicketInput(
         ticket_id="TICKET-002",
+        customer_id="CUST-2001",
         customer_info="Enterprise plan, Thailand region, 45 seats, 8 months customer, first critical issue",
         messages=[
             TicketMessage(
@@ -49,6 +50,7 @@ SAMPLE_TICKETS: Dict[int, TicketInput] = {
     ),
     3: TicketInput(
         ticket_id="TICKET-003",
+        customer_id="CUST-3001",
         customer_info="Pro plan, 5 months customer, active user (daily logins), no previous support tickets",
         messages=[
             TicketMessage(

@@ -1,15 +1,14 @@
-import os
 import json
-from typing import List
+import logging
+import os
+
 import openai
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from app.schemas import TicketInput, TriageResult, APIResponse
-from app.tools import TOOLS_SCHEMA, AVAILABLE_TOOLS
 from app.prompts import SYSTEM_PROMPT
-
-import logging
+from app.schemas import APIResponse, TicketInput, TriageResult
+from app.tools import AVAILABLE_TOOLS, TOOLS_SCHEMA
 
 logger = logging.getLogger("support-triage-agent.agent")
 
@@ -74,9 +73,13 @@ class SupportTriageAgent:
         messages_text = "\n".join(
             [f"- [{msg.timestamp}]: {msg.content}" for msg in ticket.messages]
         )
+        ticket_id = ticket.ticket_id or "Not provided"
+        customer_id = ticket.customer_id or "Not provided"
+        customer_info = ticket.customer_info or "Not provided"
         return (
-            f"Ticket ID: {ticket.ticket_id}\n"
-            f"Customer Info: {ticket.customer_info}\n\n"
+            f"Ticket ID: {ticket_id}\n"
+            f"Customer ID: {customer_id}\n"
+            f"Customer Info: {customer_info}\n\n"
             f"Conversation History:\n{messages_text}"
         )
 
@@ -93,7 +96,7 @@ class SupportTriageAgent:
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": self._format_ticket_for_llm(ticket)},
         ]
-        tools_called: List[str] = []
+        tools_called: list[str] = []
 
         # Allow up to 5 tool-calling rounds (guards against an infinite loop).
         for _ in range(5):
@@ -151,7 +154,7 @@ class SupportTriageAgent:
 
 
         return APIResponse(
-            ticket_id=ticket.ticket_id,
+            ticket_id=ticket.ticket_id or "Not provided",
             tools_called=tools_called,
             triage_result=triage_result,
         )

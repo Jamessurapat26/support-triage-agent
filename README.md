@@ -10,8 +10,8 @@ An automated AI Support Ticket Triage system built with **FastAPI**, **OpenAI Fu
 * **Metadata Extraction**: Extracts `product_area`, `issue_type`, `customer_sentiment`, `detected_language`, and a concise executive `summary`.
 * **Tool-Driven Investigation**: Mandates calling at least 2 internal tools (mocked) to gather facts before reaching a verdict:
   * `search_knowledge_base`: Retrieves troubleshooting steps, known bugs, or workarounds.
-  * `check_customer_and_billing_status`: Inspects subscription tier, seat count, and payment gateway logs.
-  * `check_system_status`: Inspects internal regional infrastructure telemetry (e.g., edge gateway status vs public status page).
+  * `get_customer_profile`: Looks up account, plan, SLA tier, region, and recent billing transactions by customer ID.
+  * `check_system_status`: Checks active infrastructure incidents for a region code.
 * **Next Action Routing**: Decides whether to `auto_respond`, `route_to_specialist`, or `escalate_to_human`.
 * **Language-Preserved Response**: Automatically crafts an empathetic resolution response in the customer's native language (e.g., Thai or English).
 

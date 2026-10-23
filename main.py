@@ -15,7 +15,7 @@ logger = logging.getLogger("support-triage-agent")
 app = FastAPI(
     title="Support Ticket Triage Agent API",
     description="AI Agent that classifies ticket urgency, extracts key info, searches KB, and decides next actions.",
-    version="1.1.0",
+    version="1.2.0",
 )
 
 

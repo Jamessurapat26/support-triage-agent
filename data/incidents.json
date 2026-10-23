@@ -1,0 +1,18 @@
+[
+  {
+    "id": "INC-902",
+    "region": "ap-southeast-1",
+    "status": "active",
+    "affected_services": ["API Gateway", "Authentication", "Workspace"],
+    "started_at": "2 hours ago",
+    "description": "Asia-Southeast API Gateway (ap-southeast-1) is returning HTTP 500 errors due to a database connection pool exhaustion. Started 2 hours ago. Enterprise and Pro users in this region cannot authenticate or load workspace."
+  },
+  {
+    "id": "INC-771",
+    "region": "eu-west-1",
+    "status": "resolved",
+    "affected_services": ["Email Delivery"],
+    "started_at": "2026-10-20T14:00:00Z",
+    "description": "Notification email delivery in eu-west-1 was delayed. The mail workers were restarted and the incident is resolved."
+  }
+]
